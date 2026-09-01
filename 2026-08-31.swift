@@ -39,21 +39,21 @@ import Foundation
 // Use let. Try assigning a new value to it afterward — read the error,
 // then remove the bad assignment.
 let appName = "PNC Mobile"
-appName = "New App"
  
 // TODO 1b: Declare a variable named loginAttempts and set it to 0.
 // Then increment it by 1 on the next line using +=
-
+var loginAttempts = 0
+loginAttempts += 1
 // TODO 1c: Declare a constant named accountBalance of type Double
 // with value 4_250.75
 // (Note: Swift lets you use _ as a thousands separator for readability)
-
+let accountBalance: Double = 4_250.75
 
 // TODO 1d: Swift uses TYPE INFERENCE — it figures out the type from
 // the value. But sometimes you must be explicit.
 // Declare a variable named interestRate with explicit type annotation
 // Double, and assign it 0.035
-
+var inteerestRate: Double = 0.035
 
 // CHECK: Print all four values using print(). Run the playground.
 // Expected output (roughly):
@@ -61,7 +61,10 @@ appName = "New App"
 //   1
 //   4250.75
 //   0.035
-
+print(appName)
+print(loginAttempts)
+print(accountBalance)
+print(inteerestRate)
 
 // ============================================================
 // EXERCISE 2: Working with Strings
@@ -73,16 +76,18 @@ appName = "New App"
 // ============================================================
 
 // TODO 2a: Declare constants firstName = "Jane" and lastName = "Smith"
-
+let firstName = "Jane"
+let lastName = "Smith"
 
 // TODO 2b: Using string interpolation, create a constant fullName
 // that combines them with a space between.
 // Format: "Jane Smith"
-
-
+let fullName = "\(firstName) \(lastName)"
+print(fullName)
 // TODO 2c: Create a constant greeting that produces:
 // "Welcome to PNC Mobile, Jane Smith. Your account is active."
 // Use interpolation — do not use string concatenation with +
+let greeting = "Welcome to PNC Mobile, \(fullName). Your account is active."
 
 
 // TODO 2d: Declare a constant accountNumber = "1234567890"
@@ -90,16 +95,16 @@ appName = "New App"
 // Hint: String(accountNumber.suffix(4)) gives you "7890"
 // Your masked version should be "****7890"
 // Store it in a constant named maskedAccount
-
-
+let accountNumber = "1234567890"
+let maskedAccount = "****" + String(accountNumber.suffix(4))
 // TODO 2e: Using the string properties available on Swift strings,
 // print the number of characters in fullName.
 // Hint: .count
-
+print(fullName.count)
 
 // CHECK: Print greeting and maskedAccount. Verify output matches expectations.
-
-
+print(greeting)
+print(maskedAccount)
 // ============================================================
 // EXERCISE 3: Type Safety and Conversion
 // Estimated time: 10 minutes
@@ -117,28 +122,33 @@ let transactionCount = 47          // Int
 let transactionTotal = 12_309.88   // Double
 
 // Try this line — it won't compile. Read the error.
-// let average = transactionTotal / transactionCount
+//let average = transactionTotal / Double(transactionCount)
 
 // TODO 3b: Fix it by converting transactionCount to Double inline.
 // Store the result in a constant named averageTransaction.
-
+let averageTransaction = transactionTotal / Double(transactionCount)
 
 // TODO 3c: Create a formatted string that reads:
 // "47 transactions averaging $261.91 each"
 // Use String(format: "%.2f", averageTransaction) to format the Double.
 // Store it in a constant named summary and print it.
-
-
+let summary = "\(transactionCount) transactions averaging $\(String(format: "%.2f", averageTransaction)) each"
+print(summary)
 // TODO 3d: Swift optionals — preview
 // This is a common pattern. String-to-Int conversion returns an
 // OPTIONAL because the string might not be a valid number.
 let rawInput = "2500"
 let parsedAmount = Int(rawInput)   // This is Int?, not Int
 
+
 // TODO: Use if let to safely unwrap parsedAmount and print:
 // "Parsed amount: 2500"
 // If it's nil, print: "Invalid input"
-
+if let amount = parsedAmount {
+    print("Parsed amount: \(amount)")
+} else {
+    print("Invalid input")
+}
 
 // ============================================================
 // EXERCISE 4: Control Flow
@@ -154,16 +164,38 @@ let parsedAmount = Int(rawInput)   // This is Int?, not Int
 let balance: Double = 8_500.00
 
 // Rules:
-//   balance > 25_000  → print "Private Banking eligible"
+if balance > 25_000 {
+    print("Private Banking eligible")
+} else if balance > 10_000 {
+    print("Preferred client")
+} else if balance > 1_000 {
+    print("Standard account")
+} else {
+    print("Low balance alert")
+}
+
+// balance > 25_000  → print "Private Banking eligible"
 //   balance > 10_000  → print "Preferred client"
 //   balance > 1_000   → print "Standard account"
 //   otherwise         → print "Low balance alert"
 
-
 // TODO 4b: Switch with pattern matching
 // Swift switch can match ranges — far more powerful than Python/JS
 let creditScore = 714
-
+var result = ""
+switch creditScore {
+case 800...850:
+    result = "Exceptional"
+case 740...799:
+    result = "Very Good"
+case 670...739:
+    result = "Good"
+case 580...669:
+    result = "Fair"
+default:
+    result = "Poor"
+}
+print("Credit rating: \(result)")
 // Write a switch statement on creditScore:
 //   800...850  → "Exceptional"
 //   740...799  → "Very Good"
@@ -177,6 +209,16 @@ let creditScore = 714
 // For now, use a String:
 let transactionType = "transfer"
 
+switch transactionType {
+case "deposit":
+    print("Processing deposit")
+case "withdrawal":
+    print("Processing withdrawal")
+case "transfer":
+    print("Processing transfer")
+default:
+    print("Unknown transaction type: \(transactionType)")
+}
 // Write a switch on transactionType with cases:
 //   "deposit"    → "Processing deposit"
 //   "withdrawal" → "Processing withdrawal"
@@ -195,12 +237,16 @@ let transactionType = "transfer"
 func processWithdrawal(amount: Double, availableBalance: Double) -> String {
     // TODO: Add a guard statement that returns "Invalid amount"
     // if amount is less than or equal to zero.
-
+    guard amount >= 0 else {
+        return "Invalid amount"
+    }
     // TODO: Add a second guard that returns
     // "Insufficient funds. Available: $X.XX"
     // if amount exceeds availableBalance.
     // Use String(format: "%.2f", availableBalance) for the dollar format.
-
+    guard amount <= availableBalance else {
+        return "Insufficient funds. Available: $\(String(format: "%.2f", availableBalance))"
+    }
     return "Withdrawal of $\(String(format: "%.2f", amount)) approved"
 }
 
@@ -221,12 +267,16 @@ print(processWithdrawal(amount: 500, availableBalance: 1000))       // Approved
 // TODO 5a: for-in over a range
 // Print the multiplication table for 7: "7 x 1 = 7" through "7 x 10 = 70"
 // Use a closed range: 1...10
-
+for i in 1...10 {
+    print("7 x \(i) = \(7 * i)")
+}
 
 // TODO 5b: for-in with where clause (built-in filter)
 // Print only the even numbers from 1 through 20.
 // Use: for num in 1...20 where num % 2 == 0
-
+for num in 1...20 where num % 2 == 0 {
+    print(num)
+}
 
 // TODO 5c: Array basics
 // Declare an array of account names:
@@ -235,7 +285,10 @@ print(processWithdrawal(amount: 500, availableBalance: 1000))       // Approved
 // "• Checking"
 // "• Savings"
 // etc.
-
+let account = ["Checking", "Savings", "Investment", "Credit Card"]
+for name in account {
+    print("• \(name)")
+}
 
 // TODO 5d: Array with enumerated()
 // Using the same array, print each item with its position number:
@@ -244,8 +297,9 @@ print(processWithdrawal(amount: 500, availableBalance: 1000))       // Approved
 // etc.
 // Hint: for (index, name) in accounts.enumerated()
 // Note: enumerated() starts at 0 — add 1 to the index when printing.
-
-
+for (index, name) in account.enumerated() {
+    print("\(index + 1). \(name)")
+}
 // TODO 5e: while loop
 // Simulate a connection retry loop.
 // Start with var attempts = 0 and var connected = false
@@ -253,7 +307,16 @@ print(processWithdrawal(amount: 500, availableBalance: 1000))       // Approved
 //   - increment attempts
 //   - print "Connection attempt \(attempts)..."
 //   - if attempts == 3, set connected = true and print "Connected."
-
+var attempts = 0
+var connected = false
+while !connected && attempts < 3 {
+    attempts += 1
+    print("Connection attempt \(attempts)")
+    if attempts == 3 {
+        connected = true
+        print("Connected.")
+    }
+}
 
 // ============================================================
 // REVIEW QUESTIONS
