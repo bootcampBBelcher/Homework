@@ -1,4 +1,4 @@
-// ============================================================
+//// ============================================================
 // EXERCISE: Structs — Value Types
 // Estimated time: 20 minutes
 //
@@ -93,12 +93,12 @@ class BankAccount {
     var balance: Double
     var owner: String
 
-    init(id: String, accountNumber String, owner: String, initialBalance: Double = 0.0)
+    init(id: String, accountNumber: String, owner: String, initialBalance: Double = 0.0) {
         self.id = id
         self.accountNumber = accountNumber
         self.owner = owner
         self.balance = initialBalance
-
+    }
 
 //   A designated initializer: init(id:accountNumber:owner:initialBalance:)
 //   where initialBalance has a default of 0.0
@@ -113,15 +113,17 @@ class BankAccount {
             balance += amount
         }
     }
+
     func withdraw(amount: Double) -> Bool {
         if amount > 0 && amount <= balance {
             balance -= amount
             return true
         }
         return false
+    }
     func printSummary() {
         let formattedBalance = String(format: "%.2f", balance)
-        print("Account \(accountNumber) | Owner: \(owner) | Balance: $\(formattedBalance) ")
+        Swift.print("Account \(accountNumber) | Owner: \(owner) | Balance: $\(formattedBalance)")
     }
 }
 // TODO 4b: Create two BankAccount instances:
@@ -160,16 +162,11 @@ print("checkingRef balance: \(checkingRef.balance)") // Identical value
 // Withdraw 400 — should succeed (draws on overdraft).
 // Withdraw 800 — should fail (exceeds balance + overdraftLimit).
 class PremiumBankAccount : BankAccount {
-    var overdraftlimit: Double
-// Designated initializer to ensure overdraftLimit is initialized
-    init(id: String, accountNumber: String, owner: String, initialBalance: Double = 0.0, overdraftLimit: Double) {
-        self.overdraftLimit = overdraftLimit
-        super.init(id: id, accountNumber: accountNumber, owner: owner, initialBalance: initialBalance)
-    }
-
+    var overdraftLimit: Double = 0.0
     // Convenience initializer calling designated init
-    convenience init(id: String, accountNumber: String, owner: String, initialBalance: Double = 0.0, premiumOverdraft: Double) {
-        self.init(id: id, accountNumber: accountNumber, owner: owner, initialBalance: initialBalance, overdraftLimit: premiumOverdraft)
+    convenience init(id: String, accountNumber: String, owner: String, initialBalance: Double = 0.0, overdraftLimit: Double) {
+        self.init(id: id, accountNumber: accountNumber, owner: owner, initialBalance: initialBalance)
+        self.overdraftLimit = overdraftLimit
     }
 
     // Override withdraw to support overdraft protection
@@ -193,7 +190,7 @@ let test2 = premium.withdraw(amount: 800.0)
 print("Withdraw $800 succeeded: \(test2)") // false (exceeds remaining available overdraft)
 print("Final balance: \(premium.balance)")
 
-}
+
 // ============================================================
 // EXERCISE: Enumerations
 // Estimated time: 15 minutes
