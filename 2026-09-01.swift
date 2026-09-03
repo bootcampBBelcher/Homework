@@ -150,6 +150,17 @@ checkingRef.deposit(amount: 500.00)
 print("checking balance: \(checking.balance)")       // Reflects the +500 deposit
 print("checkingRef balance: \(checkingRef.balance)") // Identical value
 
+
+// Explanation:
+// Classes are reference types. When checking is assigned to checkingRef, 
+// both variables reference the exact same object in memory rather than 
+// creating an independent copy. Mutating the object through checkingRef 
+// updates the shared instance that checking points to. 
+// Structs (like Transaction in 3c) are value types, which copy their data 
+// on assignment, keeping original instances isolated from changes.
+
+
+
 // TODO 4d: Inheritance
 // Define a class PremiumBankAccount that inherits from BankAccount.
 // Add a stored property overdraftLimit: Double
