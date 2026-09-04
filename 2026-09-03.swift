@@ -333,8 +333,11 @@ enum AccountOperationsError: LocalizedError {
 // Conform to AnalyticsProvider.
 // Implement each requirement.
 struct AccountAnalytics: AnalyticsProvider {
-    var transactions: [Transaction]
-    
+    private let transactions: [Transaction]
+
+    init(transactions: [Transaction]) {
+        self.transactions = transactions
+    }
     var totalCredits: Double {
         transactions
             .filter { !$0.type.isExpense}
@@ -342,7 +345,7 @@ struct AccountAnalytics: AnalyticsProvider {
     }
     var totalDebits: Double {
         transactions
-            .filter { !$0.type.isExpense}
+            .filter { $0.type.isExpense}
             .reduce(0.0) { $0 + $1.amount }
     }
     var netFlow: Double {
