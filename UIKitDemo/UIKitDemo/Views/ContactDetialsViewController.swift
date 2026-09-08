@@ -1,5 +1,5 @@
 //
-//  ContactsViewController.swift
+//  ContactDetialsViewController.swift
 //  UIKitDemo
 //
 //  Created by user302134 on 9/8/26.
@@ -7,39 +7,26 @@
 
 import UIKit
 
-class ContactsViewController: UIViewController {
+class ContactDetailsViewController: UIViewController {
 
-    private let nameLabel = UILabel()
-    private let emailLabel = UILabel()
+    private let theLabel = UILabel()
     private let button = UIButton()
     private let contactContainer = UIStackView()
     
-    private var  name = ""{
-        didSet {
-            self.nameLabel.text = name
-        }
-    }
-    private var email = "" {
-        didSet {
-            self.emailLabel.text = email
-        }
-    }
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setup()
-        name = "Steve Smith"
-        email = "steve@example.com"
+       
     }
     private func buttopTapped() {
-        name = "Jill Jones"
-        email = "jill@example.com"
+        self.navigationController?.popViewController(animated: true)
     }
 
 }
 
-private extension ContactsViewController {
+private extension ContactDetailsViewController {
     
     
     
@@ -47,22 +34,20 @@ private extension ContactsViewController {
         self.view.backgroundColor = .white
         
         // configure our label
-        nameLabel.text = name
-        nameLabel.font = .systemFont(ofSize: 24, weight: .bold)
-        
-        emailLabel.text = email
+        theLabel.text = "These are the contact details"
+        theLabel.font = .systemFont(ofSize: 24, weight: .bold)
+    
         
         // configure our button
         button.configuration = .filled()
-        button.configuration?.title = "Change Contact"
+        button.configuration?.title = "Close"
         button.addAction(UIAction { [weak self] _ in
             self?.buttopTapped()
         }, for: .touchUpInside)
         
         
         // add the UIViews to container
-        contactContainer.addArrangedSubview(nameLabel)
-        contactContainer.addArrangedSubview(emailLabel)
+        contactContainer.addArrangedSubview(theLabel)
         contactContainer.addArrangedSubview(button)
         
         // configure the container element
