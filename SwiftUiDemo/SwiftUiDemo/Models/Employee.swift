@@ -8,7 +8,7 @@
 import SwiftUI
 
 @Observable
-class Employee {
+class Employee: Identifiable, Hashable {
     
     var id: Int
     var firstName: String
@@ -19,8 +19,15 @@ class Employee {
         self.firstName = firstName
         self.lastName = lastName
     }
+    static func == (lhs: Employee, rhs: Employee) -> Bool {
+        lhs.id == rhs.id
+    }
     
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
+
 
 
 
