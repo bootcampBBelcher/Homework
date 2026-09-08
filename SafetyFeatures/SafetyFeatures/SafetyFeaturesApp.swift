@@ -1,14 +1,14 @@
 //
-//  Lesson4App.swift
-//  Lesson4
+//  SafetyFeaturesApp.swift
+//  SafetyFeatures
 //
-//  Created by user302134 on 8/31/26.
+//  Created by user302134 on 9/2/26.
 //
 
 import SwiftUI
 
 @main
-struct Lesson4App: App {
+struct SafetyFeaturesApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
